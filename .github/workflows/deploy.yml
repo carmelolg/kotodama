@@ -16,17 +16,12 @@ concurrency:
 
 jobs:
   deploy:
-    environment:
-      name: github-pages
     runs-on: ubuntu-latest
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Checkout
         uses: actions/checkout@v5
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
@@ -38,11 +33,13 @@ jobs:
         working-directory: exampleSite
         run: hugo --minify --themesDir ../.. --baseURL="https://carmelolg.github.io/kotodama/"
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: "exampleSite/public"
-
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+        run: |
+          git config --global user.email "copilot@github.com"
+          git config --global user.name "Copilot"
+          git fetch origin gh-pages || true
+          git checkout -b gh-pages origin/gh-pages || git checkout --orphan gh-pages
+          git rm -rf .
+          cp -r exampleSite/public/* .
+          git add .
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: deploy to github pages" && git push -u origin gh-pages)
