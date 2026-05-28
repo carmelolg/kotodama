@@ -1,0 +1,131 @@
+{{ define "main" }}
+{{ partial "search-index.html" . }}
+
+<section class="search-section">
+  <div class="search-header">
+    <h1>Esplora il quaderno</h1>
+    <p class="search-subtitle">Scopri poesie e scritti per parola chiave</p>
+  </div>
+
+  <div class="search-form">
+    <div class="search-input-wrapper">
+      <span class="search-icon">🔍</span>
+      <label for="search-input" class="sr-only">Cerca poesie e scritti</label>
+      <input
+        type="text"
+        id="search-input"
+        class="search-input"
+       placeholder="Cerca una parola..."
+        autocomplete="off"
+        aria-label="Cerca poesie e scritti"
+      />
+      <button id="search-clear" class="search-clear" aria-label="Cancella ricerca" style="display: none;">✕</button>
+    </div>
+  </div>
+
+  <div id="search-results" class="search-results" role="region" aria-live="polite" aria-label="Risultati ricerca">
+  </div>
+</section>
+
+<script>
+  function escapeHtml(text) {
+    const map = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;",
+    };
+    return text.replace(/[&<>"']/g, (m) => map[m]);
+  }
+
+  function highlightMatches(text, query) {
+    const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi");
+    return text.replace(regex, "<mark>$1</mark>");
+  }
+
+  function performSearch(query) {
+    const resultsContainer = document.getElementById("search-results");
+    const clearButton = document.getElementById("search-clear");
+    const searchData = window.kotodamaSearchIndex || [];
+
+    if (!query.trim()) {
+      clearButton.style.display = "none";
+      resultsContainer.innerHTML = "";
+      return;
+    }
+
+    clearButton.style.display = "block";
+
+    const normalizedQuery = query.toLowerCase();
+    const results = searchData
+      .map((item) => ({
+        ...item,
+        titleMatch: item.title.toLowerCase().includes(normalizedQuery),
+        contentMatch: item.content.toLowerCase().includes(normalizedQuery),
+      }))
+      .filter((item) => item.titleMatch || item.contentMatch)
+      .sort((a, b) => (b.titleMatch ? 1 : 0) - (a.titleMatch ? 1 : 0));
+
+    if (results.length === 0) {
+      resultsContainer.innerHTML = `
+        <div class="search-no-results">
+          <p>Nessun risultato per "<strong>${escapeHtml(query)}</strong>"</p>
+          <p class="search-suggestion-text">Prova con parole più generiche o esplora le sezioni:</p>
+          <div class="search-fallback-links">
+            <a href="/poems/" class="fallback-link">→ Visualizza tutte le poesie</a>
+            <a href="/essays/" class="fallback-link">→ Visualizza tutti gli scritti</a>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    const resultCount = `<p class="search-result-count">${results.length} ${results.length === 1 ? "risultato" : "risultati"} trovato${results.length > 1 ? "i" : ""}</p>`;
+
+    const html = results
+      .map((result) => {
+        const icon = result.type === "Poesia" ? "📝" : "📄";
+        const contentPreview = result.content.substring(0, 150) + "...";
+        return `
+        <article class="search-result">
+          <div class="search-result-header">
+            <span class="search-result-badge">${icon} ${result.type}</span>
+          </div>
+          <h3 class="search-result-title"><a href="${result.url}">${highlightMatches(escapeHtml(result.title), query)}</a></h3>
+          <p class="search-result-preview">${highlightMatches(escapeHtml(contentPreview), query)}</p>
+          <a href="${result.url}" class="search-result-link">Leggi →</a>
+        </article>
+      `;
+      })
+      .join("");
+
+    resultsContainer.innerHTML = resultCount + html;
+  }
+
+  function attachSuggestionHandlers() {
+    document.querySelectorAll(".suggestion-tag").forEach((tag) => {
+      tag.addEventListener("click", (e) => {
+        e.preventDefault();
+        const query = tag.getAttribute("data-search");
+        document.getElementById("search-input").value = query;
+        performSearch(query);
+      });
+    });
+  }
+
+  const searchInput = document.getElementById("search-input");
+  const clearButton = document.getElementById("search-clear");
+
+  searchInput.addEventListener("input", (e) => {
+    performSearch(e.target.value);
+  });
+
+  clearButton.addEventListener("click", () => {
+    searchInput.value = "";
+    searchInput.focus();
+    performSearch("");
+  });
+
+</script>
+{{ end }}

@@ -1,0 +1,42 @@
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>{{ .Site.Title }}</h3>
+        <p class="footer-description">{{ .Site.Params.description }}</p>
+        {{ with .Site.Params.authorBio }}<p class="footer-bio">{{ . }}</p>{{ end }}
+      </div>
+
+      <div class="footer-section">
+        <h4>Link</h4>
+        <ul class="footer-links">
+          {{ with .Site.Params.socialLinks }}
+            {{ range . }}
+              <li><a href="{{ .url }}" rel="me">{{ .name }}</a></li>
+            {{ end }}
+          {{ end }}
+          {{ if .Site.Params.email }}<li><a href="mailto:{{ .Site.Params.email }}">Email</a></li>{{ end }}
+          {{ if .Site.Params.website }}<li><a href="{{ .Site.Params.website }}">Sito</a></li>{{ end }}
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h4>Navigazione</h4>
+        <ul class="footer-nav">
+          {{ range .Site.Menus.main }}
+            <li><a href="{{ .URL | relLangURL }}">{{ .Name }}</a></li>
+          {{ end }}
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-credit">
+        {{ with .Site.Params.author }}{{ . }}{{ else }}{{ .Site.Title }}{{ end }}
+        · © {{ now.Format "2006" }}
+        · {{ with .Site.Params.footerNote }}{{ . }}{{ else }}<a href="https://github.com/carmelolg/kotodama">Kotodama theme</a> by <a href="https://github.com/carmelolg">carmelolg</a>{{ end }}
+      </p>
+    </div>
+  </div>
+  {{ partial "search-index.html" . }}
+</footer>

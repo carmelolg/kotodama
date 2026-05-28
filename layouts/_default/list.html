@@ -1,0 +1,27 @@
+{{ define "main" }}
+  <section class="section-header">
+    <h1>{{ .Title }}</h1>
+    {{ with .Content }}<div class="section-content">{{ . }}</div>{{ end }}
+  </section>
+
+  <ul class="list-items">
+    {{ range .Pages.ByDate.Reverse }}
+      <li class="list-item list-item--{{ .Section }}">
+        <div class="list-item-badge">
+          {{ if eq .Section "poems" }}📝{{ else }}📄{{ end }}
+          {{ if eq .Section "poems" }}{{ i18n "poetry_type" }}{{ else }}{{ i18n "essay_type" }}{{ end }}
+        </div>
+        <div class="list-item-content">
+          <h2 class="list-item-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+          <p class="list-item-meta">
+            <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format (site.Params.dateFormat | default "02 Jan 2006") }}</time>
+            {{ with .Params.genre }} · {{ . }}{{ end }}
+          </p>
+          {{ with .Summary }}<p class="list-item-preview">{{ . }}</p>{{ end }}
+          <a href="{{ .RelPermalink }}" class="list-item-link">Leggi →</a>
+        </div>
+      </li>
+    {{ end }}
+  </ul>
+{{ end }}
+

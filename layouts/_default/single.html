@@ -1,0 +1,38 @@
+{{ define "main" }}
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    {{ if eq .Section "poems" }}
+      <a href="{{ ("/poems" | relLangURL) }}">← Torna alle poesie</a>
+    {{ else if eq .Section "essays" }}
+      <a href="{{ ("/essays" | relLangURL) }}">← Torna agli scritti</a>
+    {{ else }}
+      <a href="{{ ("/") | relLangURL }}">← Torna alla homepage</a>
+    {{ end }}
+  </nav>
+
+  <article class="entry {{ if eq .Section "poems" }}entry-poem{{ end }}">
+    <header class="entry-header">
+      <h1>{{ .Title }}</h1>
+      <p class="meta">
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format (site.Params.dateFormat | default "02 Jan 2006") }}</time>
+        {{ with .Params.genre }} · {{ . }}{{ end }}
+      </p>
+    </header>
+
+    {{ with .Params.epigraph }}
+      <blockquote class="epigraph">{{ . }}</blockquote>
+    {{ end }}
+
+    <div class="entry-content">{{ .Content }}</div>
+
+    {{ if site.Params.showTags }}
+      {{ with .Params.tags }}
+        <p class="tags">
+          {{ range . }}
+            <a href="{{ (printf "/tags/%s/" (. | urlize)) | relLangURL }}">#{{ . }}</a>
+          {{ end }}
+        </p>
+      {{ end }}
+    {{ end }}
+  </article>
+{{ end }}
+

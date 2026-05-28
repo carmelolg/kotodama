@@ -1,0 +1,60 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} · {{ .Site.Title }}{{ end }}</title>
+<meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+
+<script>
+  (function () {
+    var storedTheme = localStorage.getItem("kotodama-theme");
+    if (storedTheme === "light" || storedTheme === "dark") {
+      document.documentElement.setAttribute("data-theme", storedTheme);
+    }
+  })();
+</script>
+
+{{ $style := resources.Get "css/main.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
+{{ if .Site.Params.favicon }}<link rel="icon" href="{{ .Site.Params.favicon }}">{{ end }}
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var root = document.documentElement;
+    var toggle = document.getElementById("theme-toggle");
+    var prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+
+    if (!toggle) {
+      return;
+    }
+
+    function effectiveTheme() {
+      var selectedTheme = root.getAttribute("data-theme");
+      if (selectedTheme === "light" || selectedTheme === "dark") {
+        return selectedTheme;
+      }
+      return prefersDark.matches ? "dark" : "light";
+    }
+
+    function updateToggleState() {
+      var currentTheme = effectiveTheme();
+      var nextTheme = currentTheme === "dark" ? "light" : "dark";
+      toggle.textContent = currentTheme === "dark" ? "☀" : "☾";
+      toggle.setAttribute("aria-label", nextTheme === "dark" ? "Passa al tema scuro" : "Passa al tema chiaro");
+      toggle.setAttribute("title", nextTheme === "dark" ? "Passa al tema scuro" : "Passa al tema chiaro");
+    }
+
+    toggle.addEventListener("click", function () {
+      var nextTheme = effectiveTheme() === "dark" ? "light" : "dark";
+      root.setAttribute("data-theme", nextTheme);
+      localStorage.setItem("kotodama-theme", nextTheme);
+      updateToggleState();
+    });
+
+    prefersDark.addEventListener("change", function () {
+      if (!root.getAttribute("data-theme")) {
+        updateToggleState();
+      }
+    });
+
+    updateToggleState();
+  });
+</script>

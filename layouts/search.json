@@ -1,0 +1,8 @@
+{{- $data := slice }}
+{{- range where .Site.RegularPages "Type" "poems" }}
+  {{- $data = append $data (dict "title" .Title "url" .Permalink "content" .Plain "type" "Poesia") }}
+{{- end }}
+{{- range where .Site.RegularPages "Type" "essays" }}
+  {{- $data = append $data (dict "title" .Title "url" .Permalink "content" .Plain "type" "Scritto") }}
+{{- end }}
+{{- $data | jsonify }}

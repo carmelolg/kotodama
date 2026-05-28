@@ -1,0 +1,88 @@
+{{ define "main" }}
+  <section class="intro">
+    <h1>{{ .Site.Title }}</h1>
+    {{ with .Site.Params.tagline }}<p class="tagline">{{ . }}</p>{{ end }}
+    {{ with .Content }}<div class="home-content">{{ . }}</div>{{ end }}
+    <a href="#featured" class="cta-button">Scopri gli ultimi articoli →</a>
+  </section>
+
+  {{ $poems := first 6 (where .Site.RegularPages "Section" "poems") }}
+  {{ $essays := first 6 (where .Site.RegularPages "Section" "essays") }}
+  {{ $firstPoem := index $poems 0 }}
+  {{ $firstEssay := index $essays 0 }}
+
+  {{ if or $firstPoem $firstEssay }}
+    <section class="featured-items" id="featured" aria-label="Featured Articles">
+      {{ if $firstPoem }}
+        <article class="featured-item featured-item--poem">
+          <span class="featured-badge">📝 {{ i18n "poetry_type" }}</span>
+          <h2><a href="{{ $firstPoem.RelPermalink }}">{{ $firstPoem.Title }}</a></h2>
+          <p class="featured-preview">{{ substr (plainify $firstPoem.Content) 0 150 }}...</p>
+          <p class="featured-date">
+            <time datetime="{{ $firstPoem.Date.Format "2006-01-02" }}">{{ $firstPoem.Date.Format (site.Params.dateFormat | default "02 Jan 2006") }}</time>
+          </p>
+          <a href="{{ $firstPoem.RelPermalink }}" class="read-more">Leggi →</a>
+        </article>
+      {{ end }}
+
+      {{ if $firstEssay }}
+        <article class="featured-item featured-item--essay">
+          <span class="featured-badge">📄 {{ i18n "essay_type" }}</span>
+          <h2><a href="{{ $firstEssay.RelPermalink }}">{{ $firstEssay.Title }}</a></h2>
+          <p class="featured-preview">{{ substr (plainify $firstEssay.Content) 0 150 }}...</p>
+          <p class="featured-date">
+            <time datetime="{{ $firstEssay.Date.Format "2006-01-02" }}">{{ $firstEssay.Date.Format (site.Params.dateFormat | default "02 Jan 2006") }}</time>
+          </p>
+          <a href="{{ $firstEssay.RelPermalink }}" class="read-more">Leggi →</a>
+        </article>
+      {{ end }}
+    </section>
+  {{ end }}
+
+  {{ if $poems }}
+    <section class="panel">
+      <div class="panel-head">
+        <h2>{{ i18n "latest_poems" }}</h2>
+        {{ if gt (len $poems) 1 }}<a href="{{ "poems/" | relLangURL }}" class="cta-link">{{ i18n "view_all" }} →</a>{{ end }}
+      </div>
+      <ul class="entry-list">
+        {{ $poemsToShow := $poems }}
+        {{ if gt (len $poems) 1 }}{{ $poemsToShow = after 1 $poems }}{{ end }}
+        {{ range $poemsToShow }}
+          <li class="entry-item entry-item--poem">
+            <span class="entry-type">📝</span>
+            <div class="entry-info">
+              <a href="{{ .RelPermalink }}" class="entry-title">{{ .Title }}</a>
+              <p class="entry-preview">{{ substr (plainify .Content) 0 120 }}...</p>
+              <time datetime="{{ .Date.Format "2006-01-02" }}" class="entry-date">{{ .Date.Format (site.Params.dateFormat | default "02 Jan 2006") }}</time>
+            </div>
+          </li>
+        {{ end }}
+      </ul>
+    </section>
+  {{ end }}
+
+  {{ if $essays }}
+    <section class="panel">
+      <div class="panel-head">
+        <h2>{{ i18n "latest_essays" }}</h2>
+        {{ if gt (len $essays) 1 }}<a href="{{ "essays/" | relLangURL }}" class="cta-link">{{ i18n "view_all" }} →</a>{{ end }}
+      </div>
+      <ul class="entry-list">
+        {{ $essaysToShow := $essays }}
+        {{ if gt (len $essays) 1 }}{{ $essaysToShow = after 1 $essays }}{{ end }}
+        {{ range $essaysToShow }}
+          <li class="entry-item entry-item--essay">
+            <span class="entry-type">📄</span>
+            <div class="entry-info">
+              <a href="{{ .RelPermalink }}" class="entry-title">{{ .Title }}</a>
+              <p class="entry-preview">{{ substr (plainify .Content) 0 120 }}...</p>
+              <time datetime="{{ .Date.Format "2006-01-02" }}" class="entry-date">{{ .Date.Format (site.Params.dateFormat | default "02 Jan 2006") }}</time>
+            </div>
+          </li>
+        {{ end }}
+      </ul>
+    </section>
+  {{ end }}
+{{ end }}
+

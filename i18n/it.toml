@@ -1,0 +1,23 @@
+[latest_poems]
+other = "Ultime poesie"
+
+[latest_essays]
+other = "Ultimi scritti"
+
+[poetry_type]
+other = "Poesia"
+
+[essay_type]
+other = "Scritto"
+
+[view_all]
+other = "Vedi tutto"
+
+[no_poems]
+other = "Nessuna poesia per ora."
+
+[no_essays]
+other = "Nessuno scritto per ora."
+
+[crafted_for_words]
+other = "pensato per le parole"

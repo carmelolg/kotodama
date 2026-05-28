@@ -1,0 +1,51 @@
+# Kotodama Theme - Default Configuration
+# Override these values in your site's config file
+
+[params]
+  # Site description (displayed in footer)
+  description = ""
+
+  # Author name (displayed in footer)
+  author = ""
+
+  # Author biography (displayed in footer)
+  authorBio = ""
+
+  # Footer note/theme attribution
+  # Leave empty to show default "Kotodama theme by carmelolg"
+  footerNote = ""
+
+  # Contact email
+  email = ""
+
+  # Website URL
+  website = ""
+
+  # Social links (array of objects)
+  # Example:
+  # socialLinks = [
+  #   { name = "GitHub", url = "https://github.com/username" },
+  #   { name = "Twitter", url = "https://twitter.com/username" }
+  # ]
+  socialLinks = []
+
+  # Favicon path (optional)
+  favicon = ""
+
+  # Date format for posts
+  dateFormat = "02 Jan 2006"
+
+  # Home page intro heading
+  homeIntroHeading = ""
+
+  # Home page intro text
+  homeIntroText = ""
+
+  # Show tags in article pages
+  showTags = true
+
+[outputs]
+  home = ["HTML", "JSON"]
+
+[taxonomies]
+  tag = "tags"

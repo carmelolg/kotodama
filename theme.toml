@@ -1,0 +1,13 @@
+name = "Kotodama"
+license = "CC-BY-4.0"
+licenselink = "https://github.com/carmelolg/kotodama/blob/main/LICENSE"
+description = "A minimal, literary Hugo theme for poets and writers. Features separate collections for poetry and essays, full-text search, dark mode, responsive design, and i18n support."
+homepage = "https://github.com/carmelolg/kotodama"
+demosite = "https://carmelolg.github.io/kotodama/"
+tags = ["poetry", "literary", "minimal", "dark-mode", "responsive", "search", "i18n", "writing"]
+features = ["poetry", "essays", "full-text search", "dark mode", "responsive design", "archive", "RSS feed", "i18n support"]
+min_version = "0.100.0"
+
+[author]
+  name = "carmelolg"
+  homepage = "https://carmelolg.github.io"

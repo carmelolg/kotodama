@@ -1,0 +1,16 @@
+<script>
+window.kotodamaSearchIndex = [
+  {{- $poems := where .Site.RegularPages "Section" "poems" }}
+  {{- $essays := where .Site.RegularPages "Section" "essays" }}
+  {{- range $i, $page := (append $poems $essays) }}
+    {{- if $i }},{{ end }}
+    {
+      "title": {{ $page.Title | jsonify }},
+      "url": "{{ $page.Permalink }}",
+      "content": {{ $page.Plain | jsonify }},
+      "type": "{{ if eq $page.Section "poems" }}Poesia{{ else }}Scritto{{ end }}"
+    }
+  {{- end }}
+];
+</script>
+
