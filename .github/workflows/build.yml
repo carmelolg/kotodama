@@ -23,7 +23,7 @@ jobs:
 
       - name: Build exampleSite
         working-directory: exampleSite
-        run: hugo --themesDir ../.. --gc --verbose
+        run: hugo --themesDir ../.. --gc
 
       - name: Check output
         working-directory: exampleSite
