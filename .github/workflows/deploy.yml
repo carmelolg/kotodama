@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -35,8 +35,10 @@ jobs:
 
       - name: Deploy to GitHub Pages
         run: |
-          git config --global user.email "copilot@github.com"
-          git config --global user.name "Copilot"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          # Create authenticated remote URL
+          git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/carmelolg/kotodama.git"
           git fetch origin gh-pages || true
           git checkout -b gh-pages origin/gh-pages || git checkout --orphan gh-pages
           git rm -rf .
