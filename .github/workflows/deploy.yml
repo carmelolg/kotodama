@@ -35,6 +35,9 @@ jobs:
 
       - name: Deploy to GitHub Pages
         run: |
+          set -euo pipefail
+          deploy_dir="$(mktemp -d)"
+          cp -a exampleSite/public/. "${deploy_dir}/"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           # Create authenticated remote URL
@@ -42,7 +45,7 @@ jobs:
           git fetch origin gh-pages || true
           git checkout -b gh-pages origin/gh-pages || git checkout --orphan gh-pages
           git rm -rf .
-          cp -a exampleSite/public/. .
-          rm -rf exampleSite/public
+          cp -a "${deploy_dir}/." .
+          rm -rf "${deploy_dir}"
           git add .
           git diff --quiet && git diff --staged --quiet || (git commit -m "chore: deploy to github pages" && git push -u origin gh-pages)
