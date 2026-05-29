@@ -42,6 +42,7 @@ jobs:
           git fetch origin gh-pages || true
           git checkout -b gh-pages origin/gh-pages || git checkout --orphan gh-pages
           git rm -rf .
-          cp -r exampleSite/public/* .
+          cp -a exampleSite/public/. .
+          rm -rf exampleSite/public
           git add .
           git diff --quiet && git diff --staged --quiet || (git commit -m "chore: deploy to github pages" && git push -u origin gh-pages)
