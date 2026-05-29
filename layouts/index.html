@@ -15,7 +15,8 @@
     <section class="featured-items" id="featured" aria-label="Featured Articles">
       {{ if $firstPoem }}
         <article class="featured-item featured-item--poem">
-          <span class="featured-badge">📝 {{ i18n "poetry_type" }}</span>
+          <span class="featured-badge featured-badge--poem" aria-hidden="true"></span>
+          <span class="featured-badge-label">{{ i18n "poetry_type" }}</span>
           <h2><a href="{{ $firstPoem.RelPermalink }}">{{ $firstPoem.Title }}</a></h2>
           <p class="featured-preview">{{ substr (plainify $firstPoem.Content) 0 150 }}...</p>
           <p class="featured-date">
@@ -27,7 +28,8 @@
 
       {{ if $firstEssay }}
         <article class="featured-item featured-item--essay">
-          <span class="featured-badge">📄 {{ i18n "essay_type" }}</span>
+          <span class="featured-badge featured-badge--essay" aria-hidden="true"></span>
+          <span class="featured-badge-label">{{ i18n "essay_type" }}</span>
           <h2><a href="{{ $firstEssay.RelPermalink }}">{{ $firstEssay.Title }}</a></h2>
           <p class="featured-preview">{{ substr (plainify $firstEssay.Content) 0 150 }}...</p>
           <p class="featured-date">
@@ -50,7 +52,7 @@
         {{ if gt (len $poems) 1 }}{{ $poemsToShow = after 1 $poems }}{{ end }}
         {{ range $poemsToShow }}
           <li class="entry-item entry-item--poem">
-            <span class="entry-type">📝</span>
+            <span class="entry-type entry-type--poem" aria-hidden="true"></span>
             <div class="entry-info">
               <a href="{{ .RelPermalink }}" class="entry-title">{{ .Title }}</a>
               <p class="entry-preview">{{ substr (plainify .Content) 0 120 }}...</p>
@@ -73,7 +75,7 @@
         {{ if gt (len $essays) 1 }}{{ $essaysToShow = after 1 $essays }}{{ end }}
         {{ range $essaysToShow }}
           <li class="entry-item entry-item--essay">
-            <span class="entry-type">📄</span>
+            <span class="entry-type entry-type--essay" aria-hidden="true"></span>
             <div class="entry-info">
               <a href="{{ .RelPermalink }}" class="entry-title">{{ .Title }}</a>
               <p class="entry-preview">{{ substr (plainify .Content) 0 120 }}...</p>
@@ -85,4 +87,3 @@
     </section>
   {{ end }}
 {{ end }}
-

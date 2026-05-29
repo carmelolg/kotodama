@@ -8,7 +8,7 @@
     {{ range .Pages.ByDate.Reverse }}
       <li class="list-item list-item--{{ .Section }}">
         <div class="list-item-badge">
-          {{ if eq .Section "poems" }}📝{{ else }}📄{{ end }}
+          {{ if eq .Section "poems" }}<span class="entry-type entry-type--poem" aria-hidden="true"></span>{{ else }}<span class="entry-type entry-type--essay" aria-hidden="true"></span>{{ end }}
           {{ if eq .Section "poems" }}{{ i18n "poetry_type" }}{{ else }}{{ i18n "essay_type" }}{{ end }}
         </div>
         <div class="list-item-content">
@@ -24,4 +24,3 @@
     {{ end }}
   </ul>
 {{ end }}
-

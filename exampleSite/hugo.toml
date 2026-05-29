@@ -1,6 +1,6 @@
 baseURL = "https://example.org/"
 defaultContentLanguage = "it"
-title = "Quaderno di luce"
+title = "Kotodama"
 theme = "kotodama"
 
 [languages]
@@ -12,6 +12,7 @@ theme = "kotodama"
   author = "Nome Autore"
   description = "Poesie e scritti da condividere con lentezza."
   tagline = "Ogni parola ha un peso."
+  googleAnalyticsID = ""
   dateFormat = "02 Jan 2006"
   authorBio = "Poeta e scrittore appassionato di letteratura e riflessione."
   email = "hello@example.org"
@@ -24,6 +25,12 @@ theme = "kotodama"
 
 [taxonomies]
   tag = "tags"
+
+[services]
+  [services.googleAnalytics]
+    # Add your GA4 measurement ID here.
+    # The theme will show a GDPR banner and wait for consent.
+    ID = ""
 
 [menu]
   [[menu.main]]

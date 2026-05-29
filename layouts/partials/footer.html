@@ -40,3 +40,96 @@
   </div>
   {{ partial "search-index.html" . }}
 </footer>
+
+{{ $gaID := or site.Config.Services.GoogleAnalytics.ID site.Params.googleAnalyticsID }}
+{{ if $gaID }}
+  <div class="cookie-banner" id="cookie-banner" data-ga-id="{{ $gaID }}" hidden>
+    <div class="cookie-banner__content">
+      <p class="cookie-banner__title">{{ i18n "cookie_consent_title" }}</p>
+      <p class="cookie-banner__text">{{ i18n "cookie_consent_text" }}</p>
+    </div>
+    <div class="cookie-banner__actions">
+      <button type="button" class="cookie-banner__button cookie-banner__button--primary" id="cookie-banner-accept">{{ i18n "cookie_consent_accept" }}</button>
+      <button type="button" class="cookie-banner__button cookie-banner__button--secondary" id="cookie-banner-reject">{{ i18n "cookie_consent_reject" }}</button>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var banner = document.getElementById("cookie-banner");
+      if (!banner) {
+        return;
+      }
+
+      var gaId = banner.getAttribute("data-ga-id");
+      var acceptButton = document.getElementById("cookie-banner-accept");
+      var rejectButton = document.getElementById("cookie-banner-reject");
+      var consentCookie = "kotodama_ga_consent";
+      var analyticsLoaded = false;
+
+      function getCookie(name) {
+        var prefix = name + "=";
+        var cookies = document.cookie ? document.cookie.split("; ") : [];
+        for (var i = 0; i < cookies.length; i += 1) {
+          if (cookies[i].indexOf(prefix) === 0) {
+            return cookies[i].substring(prefix.length);
+          }
+        }
+        return null;
+      }
+
+      function setCookie(name, value) {
+        document.cookie = name + "=" + value + "; Max-Age=31536000; Path=/; SameSite=Lax";
+      }
+
+      function loadAnalytics() {
+        if (analyticsLoaded || !gaId) {
+          return;
+        }
+
+        analyticsLoaded = true;
+
+        var script = document.createElement("script");
+        script.async = true;
+        script.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(gaId);
+        document.head.appendChild(script);
+
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = window.gtag || function () {
+          window.dataLayer.push(arguments);
+        };
+
+        window.gtag("js", new Date());
+        window.gtag("config", gaId);
+      }
+
+      function hideBanner() {
+        banner.hidden = true;
+      }
+
+      var storedConsent = getCookie(consentCookie);
+
+      if (storedConsent === "granted") {
+        loadAnalytics();
+        return;
+      }
+
+      if (storedConsent === "denied") {
+        return;
+      }
+
+      banner.hidden = false;
+
+      acceptButton.addEventListener("click", function () {
+        setCookie(consentCookie, "granted");
+        hideBanner();
+        loadAnalytics();
+      });
+
+      rejectButton.addEventListener("click", function () {
+        setCookie(consentCookie, "denied");
+        hideBanner();
+      });
+    })();
+  </script>
+{{ end }}

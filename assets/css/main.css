@@ -98,6 +98,81 @@ input:focus-visible {
   background: var(--paper);
 }
 
+.cookie-banner {
+  position: fixed;
+  left: 50%;
+  bottom: 1.25rem;
+  transform: translateX(-50%);
+  width: min(860px, calc(100% - 2rem));
+  z-index: 50;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1rem 1.25rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
+}
+
+.cookie-banner[hidden] {
+  display: none;
+}
+
+.cookie-banner__content {
+  flex: 1;
+}
+
+.cookie-banner__title {
+  margin: 0 0 0.35rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cookie-banner__text {
+  margin: 0;
+  color: var(--soft);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.cookie-banner__actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.cookie-banner__button {
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 0.65rem 1rem;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cookie-banner__button:hover {
+  border-color: var(--accent);
+}
+
+.cookie-banner__button--primary {
+  background: var(--accent);
+  color: var(--paper);
+  border-color: var(--accent);
+}
+
+.cookie-banner__button--primary:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
 .site-header .container {
   display: flex;
   justify-content: space-between;
@@ -364,12 +439,48 @@ h3 {
 }
 
 .featured-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
   font-size: 0.8rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--accent);
   margin-bottom: 0.75rem;
+}
+
+.featured-badge::before,
+.entry-type::before,
+.search-result-badge::before {
+  display: inline-block;
+  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.featured-badge--poem::before,
+.entry-type--poem::before {
+  content: "∴";
+}
+
+.featured-badge--essay::before,
+.entry-type--essay::before {
+  content: "◦";
+}
+
+.featured-badge-label {
+  display: inline-block;
+}
+
+.featured-badge--poem,
+.entry-type--poem {
+  width: 1.1rem;
+}
+
+.featured-badge--essay,
+.entry-type--essay {
+  width: 1.1rem;
 }
 
 .featured-item h2 {
@@ -438,6 +549,9 @@ h3 {
 }
 
 .entry-type {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-size: 1.25rem;
   width: 2rem;
   flex-shrink: 0;
@@ -1075,4 +1189,3 @@ h3 {
     width: 100%;
   }
 }
-

@@ -32,6 +32,11 @@
   # Favicon path (optional)
   favicon = ""
 
+  # Optional Google Analytics 4 ID fallback.
+  # Recommended approach is [services.googleAnalytics].ID in your site config.
+  # If Analytics is configured, the theme shows a GDPR banner and waits for consent.
+  googleAnalyticsID = ""
+
   # Date format for posts
   dateFormat = "02 Jan 2006"
 

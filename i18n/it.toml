@@ -21,3 +21,15 @@ other = "Nessuno scritto per ora."
 
 [crafted_for_words]
 other = "pensato per le parole"
+
+[cookie_consent_title]
+other = "Cookie e privacy"
+
+[cookie_consent_text]
+other = "Questo sito usa Google Analytics per misurare le visite. Puoi accettare o rifiutare i cookie analitici."
+
+[cookie_consent_accept]
+other = "Accetta"
+
+[cookie_consent_reject]
+other = "Rifiuta"

@@ -21,3 +21,15 @@ other = "No essays yet."
 
 [crafted_for_words]
 other = "crafted for words"
+
+[cookie_consent_title]
+other = "Cookies and privacy"
+
+[cookie_consent_text]
+other = "This site uses Google Analytics to measure visits. You can accept or reject analytics cookies."
+
+[cookie_consent_accept]
+other = "Accept"
+
+[cookie_consent_reject]
+other = "Reject"
